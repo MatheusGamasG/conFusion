@@ -2,7 +2,7 @@
     fxLayout="row"
     fxLayout.sm="column"
     fxLayout.xs="column"
-    fxLayoutAlign.gt-md="space-around center"
+    fxLayoutAlign.gt-md="space-around"
     fxLayoutGap="10px" 
     fxLayoutGap.xs="0">
 
@@ -32,7 +32,7 @@
         </mat-card>
     </div>
 
-    <div fxFlex="40"  *ngIf="dish">
+    <div *ngIf="dish">
         <mat-list>
             <h3>Comments</h3>
             <mat-list-item *ngFor="let comm of dish.comments">
@@ -40,8 +40,34 @@
                 <p matLine>{{comm.rating}} Stars</p>
                 <p matLine>-- {{comm.author}} <span>{{comm.date | date}}</span></p>
             </mat-list-item>
+            <mat-list-item *ngIf="preview">
+                <p matLine>{{previewComment.comment}}</p>
+                <p matLine>{{previewComment.rating}} Stars</p>
+                <p matLine>-- {{previewComment.author}} <span>{{previewComment.date | date}}</span></p>
+            </mat-list-item>
         </mat-list>
-    </div>
+
+        <form novalidate [formGroup]="commentForm" #fform="ngForm" (ngSubmit)="onSubmit()">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="author" placeholder="Name" type="text" required>
+                <mat-error *ngIf="formErrors.author">
+                {{ formErrors.author }}
+                </mat-error>
+            </mat-form-field>
+            <p>
+                <mat-slider [(ngModel)]="value" matInput thumbLabel tickInterval="1" min="0" max="5" formControlName="rating" required></mat-slider>
+            </p>
+            <p>
+            <mat-form-field class="full-width">
+                <textarea matInput formControlName="comment" placeholder="Your Comment" rows="12" required></textarea>
+                <mat-error *ngIf="formErrors.author">
+                    {{ formErrors.comment }}
+                </mat-error>
+            </mat-form-field>
+            </p>
+            <button type="submit" mat-button class="background-primary text-floral-white" [disabled]="commentForm.invalid">Submit</button>
+        </form>
+    </div>    
 
     <div fxFlex [hidden]="dish">
         <mat-spinner></mat-spinner>
