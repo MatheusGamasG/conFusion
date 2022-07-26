@@ -14,6 +14,7 @@ import { Leader } from '../shares/leader';
 export class HomeComponent implements OnInit {
 
   dish : Dish | undefined;
+  dishErrMess:string;
   promotion : Promotion | undefined;
   leader : Leader | undefined;
 
@@ -26,7 +27,7 @@ export class HomeComponent implements OnInit {
     this.dishService.getFeaturedDish()
       .subscribe((featuredDish) => {
         this.dish = featuredDish;
-      });
+      }, errmess => this.dishErrMess = <any>errmess);
       
     this.promoService.getFeaturedPromotion()
       .subscribe((promotion) => {
