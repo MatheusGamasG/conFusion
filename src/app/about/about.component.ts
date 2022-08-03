@@ -19,6 +19,7 @@ import { flyInOut, expand } from '../animations/app.animation';
 export class AboutComponent implements OnInit {
 
   leaders : Leader[] | undefined;
+  leadersErrMess:string;
 
   constructor(private leaderService : LeaderService,
     @Inject('BaseURL') public BaseURL) { }
@@ -27,7 +28,7 @@ export class AboutComponent implements OnInit {
     this.leaderService.getLeaders()
       .subscribe((leaders) => {
         this.leaders = leaders;
-      });
+      }, errmess => this.leadersErrMess = <any>errmess);
   }
 
 }
